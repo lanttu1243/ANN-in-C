@@ -84,40 +84,37 @@ double** matSub(double** a, double** b, unsigned const int Ma, unsigned const in
     return c;
 }
 double** scalAdd(double** a, double k, unsigned const int M, unsigned const int N) {
-    double** c = createArray(Ma, Nb);
-    for (int i = 0; i < Ma; i++) {
-        for (int j = 0; j < Nb; j++){
+    double** c = createArray(M, N);
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < N; j++){
             c[i][j] = a[i][j] + k;
         }
     }
     return c;
 }
 double** scalSub(double** a, double k, unsigned const int M, unsigned const int N) {
-    double** c = createArray(Ma, Nb);
-    for (int i = 0; i < Ma; i++) {
-        for (int j = 0; j < Nb; j++){
+    double** c = createArray(M, N);
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < N; j++){
             c[i][j] = a[i][j] - k;
         }
     }
     return c;
 }
 double** scalMul(double** a, double k, unsigned const int M, unsigned const int N) {
-    double** c = createArray(Ma, Nb);
-    for (int i = 0; i < Ma; i++) {
-        for (int j = 0; j < Nb; j++){
+    double** c = createArray(M, N);
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < N; j++){
             c[i][j] = a[i][j] * k;
         }
     }
     return c;
 }
 double** scalDiv(double** a, double k, unsigned const int M, unsigned const int N) {
-#if k == 0
-#error Div by zero
-#endif
-    double** c = createArray(Ma, Nb);
-    for (int i = 0; i < Ma; i++) {
-        for (int j = 0; j < Nb; j++){
-            c[i][j] = a[i][j] / k;
+    double** c = createArray(M, N);
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < N; j++){
+            c[i][j] =  k == 0.0 ?  0.0 : a[i][j] / k;
         }
     }
     return c;
@@ -182,33 +179,30 @@ void elemMulV(double** a, double** b, unsigned const int Ma, unsigned const int 
     }
 }
 void scalAddV(double** a, double k, unsigned const int M, unsigned const int N) {
-    for (int i = 0; i < Ma; i++) {
-        for (int j = 0; j < Nb; j++){
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < N; j++){
             a[i][j] += k;
         }
     }
 }
 void scalSubV(double** a, double k, unsigned const int M, unsigned const int N) {
-    for (int i = 0; i < Ma; i++) {
-        for (int j = 0; j < Nb; j++){
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < N; j++){
             a[i][j] -= k;
         }
     }
 }
 void scalMulV(double** a, double k, unsigned const int M, unsigned const int N) {
-    for (int i = 0; i < Ma; i++) {
-        for (int j = 0; j < Nb; j++){
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < N; j++){
             a[i][j] *= k;
         }
     }
 }
 void scalDivV(double** a, double k, unsigned const int M, unsigned const int N) {
-#if k == 0
-#error Div by zero
-#endif
-    for (int i = 0; i < Ma; i++) {
-        for (int j = 0; j < Nb; j++){
-            a[i][j] /= k;
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < N; j++){
+            a[i][j] =  k == 0.0 ? 0.0 : a[i][j] / k;
         }
     }
 }
