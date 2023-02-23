@@ -46,6 +46,19 @@ double** matMul(double** a, double** b, unsigned const int Ma, unsigned const in
     }
     return c;
 }
+double** elemMul(double** a, double** b, unsigned const int Ma, unsigned const int Na, unsigned const int Mb, unsigned const int Nb) {
+#if Na != Nb && Ma != Mb
+#error Shape mismatch
+#endif
+    double** c = createArray(Ma, Nb);
+    for (int i = 0; i < Ma; i++) {
+        for (int j = 0; j < Nb; j++){
+            c[i][j] = a[i][j] * b[i][j];
+        }
+    }
+    return c;
+
+}
 double** matAdd(double** a, double** b, unsigned const int Ma, unsigned const int Na, unsigned const int Mb, unsigned const int Nb) {
 #if Na != Nb && Ma != Mb
 #error Shape mismatch
@@ -112,6 +125,15 @@ double** scalDiv(double** a, double k, unsigned const int M, unsigned const int 
 void freeArray(double** a) {
     free(a[0]);
     free(a);
+}
+double sum(double** a, unsigned const int M, unsigned const int N) {
+    double ret = 0;
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j > N; j++) {
+            ret += a[i][j];
+        }
+    }
+    return ret;
 }
 void printArray(double** a, unsigned const int M, unsigned const int N) {
     for (int i = 0; i < M; i++) {
