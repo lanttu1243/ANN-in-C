@@ -135,10 +135,89 @@ double sum(double** a, unsigned const int M, unsigned const int N) {
     }
     return ret;
 }
+double** transpose(double** a, unsigned const int M, unsigned const int N) {
+    double** b = createArray(N, M);
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < M; j++) {
+            b[i][j] = a[j][i];
+        }
+    }
+    return b;
+}
 void printArray(double** a, unsigned const int M, unsigned const int N) {
     for (int i = 0; i < M; i++) {
         for (int j = 0; j < N; j++) {
             j == N-1 ? printf("%0.2f\n", a[i][j]) : printf("%0.2f ", a[i][j]);
         }
     }
+}
+void matAddV(double** a, double** b, unsigned const int Ma, unsigned const int Na, unsigned const int Mb, unsigned const int Nb) {
+#if Na != Nb && Ma != Mb
+#error Shape mismatch
+#endif
+    for (int i = 0; i < Ma; i++) {
+        for (int j = 0; j < Nb; j++){
+            a[i][j] += b[i][j];
+        }
+    }
+}
+void matSubV(double** a, double** b, unsigned const int Ma, unsigned const int Na, unsigned const int Mb, unsigned const int Nb) {
+#if Na != Nb && Ma != Mb
+#error Shape mismatch
+#endif
+    for (int i = 0; i < Ma; i++) {
+        for (int j = 0; j < Nb; j++){
+            a[i][j] -= b[i][j];
+        }
+    }
+}
+void elemMulV(double** a, double** b, unsigned const int Ma, unsigned const int Na, unsigned const int Mb, unsigned const int Nb) {
+#if Na != Nb && Ma != Mb
+#error Shape mismatch
+#endif
+    for (int i = 0; i < Ma; i++) {
+        for (int j = 0; j < Nb; j++){
+            a[i][j] *= b[i][j];
+        }
+    }
+}
+void scalAddV(double** a, double k, unsigned const int M, unsigned const int N) {
+    for (int i = 0; i < Ma; i++) {
+        for (int j = 0; j < Nb; j++){
+            a[i][j] += k;
+        }
+    }
+}
+void scalSubV(double** a, double k, unsigned const int M, unsigned const int N) {
+    for (int i = 0; i < Ma; i++) {
+        for (int j = 0; j < Nb; j++){
+            a[i][j] -= k;
+        }
+    }
+}
+void scalMulV(double** a, double k, unsigned const int M, unsigned const int N) {
+    for (int i = 0; i < Ma; i++) {
+        for (int j = 0; j < Nb; j++){
+            a[i][j] *= k;
+        }
+    }
+}
+void scalDivV(double** a, double k, unsigned const int M, unsigned const int N) {
+#if k == 0
+#error Div by zero
+#endif
+    for (int i = 0; i < Ma; i++) {
+        for (int j = 0; j < Nb; j++){
+            a[i][j] /= k;
+        }
+    }
+}
+double** copy(double** a, unsigned const int M, unsigned const int N) {
+    double** out = createArray(M, N);
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < N; j++) {
+            out[i][j] = a[i][j];
+        }
+    }
+    return out;
 }
