@@ -16,9 +16,9 @@ double** createArray(unsigned const int M, unsigned const int N) {
     return columns;
 }
 void randoms(double** a, unsigned const int M, unsigned const int N) {
+    srand(time(NULL));
     for (int i = 0; i < M; i++) {
         for (int j = 0; j < N; j++) {
-            srand(time(NULL));
             a[i][j] = rand();
         }
     }
