@@ -25,3 +25,11 @@ void printArray(double** arr, unsigned int M, unsigned int N) {
         (N-1)==i ? printf("]\n") : printf("\n");
     }
 }
+void randoms(double** arr, unsigned int M, unsigned int N) {
+    srand(time(NULL));
+    for (unsigned int i = 0; i < M; i++){
+        for (unsigned int j = 0; j < N; j++) {
+            arr[i][j] = rand() / INT64_MAX * 2 - 1;
+        }
+    }
+}
