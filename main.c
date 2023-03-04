@@ -3,6 +3,7 @@
 #include "matrix.h"
 
 int main() {
+    printf("hello");
     // Initialise input and output matrices
     double** input = createArray(4, 3);
     double** output = createArray(4, 1);

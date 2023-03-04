@@ -29,7 +29,7 @@ void scalDivV(double** a, double k, unsigned int M, unsigned int N);
 double** copy(double** a, unsigned int M, unsigned int N);
 
 void randoms(double** a, unsigned int M, unsigned int N);
-void freeArray(double** a);
+void freeArray(double** a, unsigned int M);
 double sum(double** a, unsigned int M, unsigned int N);
 double** transpose(double** a, unsigned int M, unsigned N);
 void printArray(double** a, unsigned int M, unsigned int N);

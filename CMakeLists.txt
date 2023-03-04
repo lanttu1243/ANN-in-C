@@ -3,4 +3,4 @@ project(ANN-in-C C)
 
 set(CMAKE_C_STANDARD 23)
 
-add_executable(ANN-in-C main.c matrix.c, matrix.h)
+add_executable(ANN-in-C main.c, matrix.c, matrix.h)
