@@ -1,61 +1,84 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "matrix.h"
-
+typedef struct array {
+    double** array;
+    int M;
+    int N;
+}array;
 int main() {
-    printf("hello");
+    int inputSize = 10;
     // Initialise input and output matrices
-    double** input = createArray(4, 3);
-    double** output = createArray(4, 1);
-    input[0][2] = 1.0;
-    input[1][1] = 1.0;
-    input[2][0] = 1.0;
-    input[2][2] = 1.0;
-    input[3][0] = 1.0;
-    input[3][1] = 1.0;
-    output[0][0] = 1.0;
-    output[2][0] = 1.0;
+    array input = createArray(inputSize, 3);
+    array output = createArray(inputSize, 1);
+    random01(input);
 
-    double** weight = createArray(3, 1);
-    randoms(weight, 3, 1);
+    output.array[0][0] = 1.0;
+    output.array[2][0] = 1.0;
 
-    double** bias = createArray(1, 1);
-    randoms(bias, 1, 1);
+    array weight = createArray(3, 1);
+    randoms(weight);
+
+    array bias = createArray(1, 1);
+    randoms(bias);
+
+    array xT = createArray(3, inputSize);
+    T(xT, input);
+
+    printArray(matMul(input, weight));
 
     double error = 100;
-    double learningRate = 1e-3;
-
+    double learningRate = 1e-4;
+    array y = createArray(inputSize, 1);
     int n = 0;
 
     while (error > 0.1) {
-        // Forward pass
-        double** y = matAdd(matMul(input, weight, 4, 3, 3, 1), bias, 4, 1, 4, 1);
-        double** elemEr = matSub(output, y, 4, 1, 4, 1);
-        double** rms = copy(elemEr, 4, 1);
-        scalMulV(rms, 0.5, 4, 1);
-        elemMulV(rms, rms, 4, 1, 4, 1);
-        // Calculate the error
-        error = sum(rms, 4, 1);
-        // Backpropagation dE/dB
-        double** dy = copy(elemEr, 4, 1);
-        scalMulV(dy, -1.0, 4, 1);
-        scalSubV(bias, learningRate * sum(dy, 4, 1), 1, 1);
-        // Backpropagation dE/dW
-        double** xt = transpose(input, 4, 3);
-        double** dw = matMul(xt, dy, 3, 4, 4, 1);
-        matSubV(weight, dw, 3, 1, 3, 1);
+        // Initialise forward pass 😀
+        array z = matMul(input, weight);
+        array eZ = createArray(inputSize, 1);
+        array eO = createArray(inputSize, 1);
+        array E = createArray(inputSize, 1);
+        // forward pass
+        scalAdd(z, bias.array[0][0]);
+        sigmoid(y, z);
+        arrayAdd(eZ, output);
+        arraySub(eZ, y);
+        arrayAdd(eO, eZ);
+        arrayMul(eO, eO);
+        arrayAdd(E, eO);
+        scalMul(E, 0.5);
+        error = sum(E);
+
+        array dedy = createArray(inputSize, 1);
+        array dydz = createArray(inputSize, 1);
+        array dzdW;
+        array dzdB = createArray(1, 1);
+
+        copy(dedy, eZ);
+
+        sigmoidDerivative(dydz, dedy);
+        dzdW = matMul(xT, dydz);
+        dzdB.array[0][0] = sum(dydz);
+        scalMul(dzdB, learningRate);
+        scalMul(dzdW, learningRate);
+        arrayAdd(weight, dzdW);
+        arrayAdd(bias, dzdB);
+
+        freeArray(z);
+        freeArray(eZ);
+        freeArray(eO);
+        freeArray(E);
+        freeArray(dedy);
+        freeArray(dydz);
+        freeArray(dzdW);
+        freeArray(dzdB);
+
 
         if (n % 1000 == 0) {
             printf("%d, %f\n", n, error);
-            printArray(y, 4, 1);
         }
-        freeArray(y);
-        freeArray(elemEr);
-        freeArray(rms);
-        freeArray(dy);
-        freeArray(xt);
-        freeArray(dw);
         n++;
     }
+    printArray(y);
 
 }

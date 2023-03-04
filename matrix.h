@@ -6,30 +6,27 @@
 #define ANN_IN_C_MATRIX_H
 
 #endif //ANN_IN_C_MATRIX_H
+typedef struct array array;
 
-double** createArray(unsigned int M, unsigned int N);
-double** matMul(double** a, double** b, unsigned int Ma, unsigned int Na, unsigned int Mb, unsigned int Nb);
+array createArray(unsigned int M, unsigned int N);
+void freeArray(array arr);
+void printArray(array arr);
+void copy(array target, array source);
 
-double** matAdd(double** a, double** b, unsigned int Ma, unsigned int Na, unsigned int Mb, unsigned int Nb);
-double** matSub(double** a, double** b, unsigned int Ma, unsigned int Na, unsigned int Mb, unsigned int Nb);
-double** elemMul(double** a, double** b, unsigned int Ma, unsigned int Na, unsigned int Mb, unsigned int Nb);
-double** scalAdd(double** a, double k, unsigned int M, unsigned int N);
-double** scalSub(double** a, double k, unsigned int M, unsigned int N);
-double** scalMul(double** a, double k, unsigned int M, unsigned int N);
-double** scalDiv(double** a, double k, unsigned int M, unsigned int N);
+array matMul(array a, array b);
 
-void matAddV(double** a, double** b, unsigned int Ma, unsigned int Na, unsigned int Mb, unsigned int Nb);
-void matSubV(double** a, double** b, unsigned int Ma, unsigned int Na, unsigned int Mb, unsigned int Nb);
-void elemMulV(double** a, double** b, unsigned int Ma, unsigned int Na, unsigned int Mb, unsigned int Nb);
-void scalAddV(double** a, double k, unsigned int M, unsigned int N);
-void scalSubV(double** a, double k, unsigned int M, unsigned int N);
-void scalMulV(double** a, double k, unsigned int M, unsigned int N);
-void scalDivV(double** a, double k, unsigned int M, unsigned int N);
+void arrayAdd(array a, array b);
+void arraySub(array a, array b);
+void arrayMul(array a, array b);
 
-double** copy(double** a, unsigned int M, unsigned int N);
+void scalAdd(array a, double b);
+void scalMul(array a, double b);
 
-void randoms(double** a, unsigned int M, unsigned int N);
-void freeArray(double** a, unsigned int M);
-double sum(double** a, unsigned int M, unsigned int N);
-double** transpose(double** a, unsigned int M, unsigned N);
-void printArray(double** a, unsigned int M, unsigned int N);
+void sigmoid(array target, array source);
+void sigmoidDerivative(array target, array source);
+
+double sum(array a);
+void T(array target, array source);
+
+void randoms(array arr);
+void random01(array a);
