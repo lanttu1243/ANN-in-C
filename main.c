@@ -6,21 +6,26 @@ typedef struct array {
     int M;
     int N;
 }array;
+
+void formatOutput(array in, array out) {
+    for (int i = 0; i < in.M; i++) {
+        out.array[i][0] = in.array[i][2];
+    }
+}
+
 int main() {
     int inputSize = 10;
     // Initialise input and output matrices
     array input = createArray(inputSize, 3);
     array output = createArray(inputSize, 1);
-    random01(input);
-
-    output.array[0][0] = 1.0;
-    output.array[2][0] = 1.0;
+    randomInt(input, 0, 2);
+    formatOutput(input, output);
 
     array weight = createArray(3, 1);
-    randoms(weight);
+    randomDouble(weight);
 
     array bias = createArray(1, 1);
-    randoms(bias);
+    randomDouble(bias);
 
     array xT = createArray(3, inputSize);
     T(xT, input);
@@ -28,12 +33,12 @@ int main() {
     printArray(matMul(input, weight));
 
     double error = 100;
-    double learningRate = 1e-4;
+    double learningRate = 1e-7;
     array y = createArray(inputSize, 1);
     int n = 0;
 
-    while (error > 0.1) {
-        // Initialise forward pass 😀
+    while (error > 0.2) {
+        // Initialise forward pass
         array z = matMul(input, weight);
         array eZ = createArray(inputSize, 1);
         array eO = createArray(inputSize, 1);
@@ -80,5 +85,6 @@ int main() {
         n++;
     }
     printArray(y);
+    printArray(output);
 
 }

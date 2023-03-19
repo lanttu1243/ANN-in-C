@@ -2,20 +2,27 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "math.h"
-#include <time.h>
+
+// Create a custom datatype for an array so there is no need to feed the dimensions as arguments for functions
 typedef struct array{
     double** array;
     int M;
     int N;
-}array;
+} array;
+
+// Initialises a matrix
 array createArray(unsigned int M, unsigned int N) {
+    // initialise rows of matrix
     double** arr = (double**) calloc(M, sizeof(double*));
     array matrix = {arr, M, N};
+    // Initialise columns
     for (unsigned int i = 0; i < matrix.M; i++) {
         matrix.array[i] = (double*) calloc(matrix.N, sizeof(double));
     }
     return matrix;
 }
+
+// frees a matrix
 void freeArray(array arr) {
     for (int i = 0; i < arr.M; i++) {
         free(arr.array[i]);
@@ -23,10 +30,11 @@ void freeArray(array arr) {
     free(arr.array);
 }
 void printArray(array arr) {
+    printf("[");
     for (unsigned int i = 0; i < arr.M; i++) {
         printf("[");
         for (unsigned int j = 0; j < arr.N; j++) {
-            (arr.N-1)==j ? printf("%0.3f", arr.array[i][j]) : printf("%0.3f,", arr.array[i][j]);
+            (arr.N-1)==j ? printf("%0.3f]", arr.array[i][j]) : printf("%0.3f,", arr.array[i][j]);
         }
         (arr.M-1)==i ? printf("]\n") : printf("\n");
     }
@@ -119,7 +127,7 @@ void arrayMul(array a, array b) {
         }
     }
 }
-void randoms(array arr) {
+void randomFloat(array arr) {
     for (unsigned int i = 0; i < arr.M; i++){
         for (unsigned int j = 0; j < arr.N; j++) {
             arr.array[i][j] = rand() * 2.0 / RAND_MAX - 1.0;
@@ -167,10 +175,10 @@ void T(array target, array source) {
         }
     }
 }
-void random01(array a) {
+void randomInt(array a, int min, int max) {
     for (unsigned int i = 0; i < a.M; i++){
         for (unsigned int j = 0; j < a.N; j++) {
-            a.array[i][j] = (rand() % 2);
+            a.array[i][j] = (rand() % (max - min)) + min;
         }
     }
 }

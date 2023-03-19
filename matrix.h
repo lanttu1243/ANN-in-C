@@ -28,5 +28,5 @@ void sigmoidDerivative(array target, array source);
 double sum(array a);
 void T(array target, array source);
 
-void randoms(array arr);
-void random01(array a);
+void randomDouble(array arr);
+void randomInt(array a, int min, int max);
