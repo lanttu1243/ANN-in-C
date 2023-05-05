@@ -1,11 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "matrix.h"
-typedef struct array {
-    double** array;
-    int M;
-    int N;
-}array;
 
 void formatOutput(array in, array out) {
     for (int i = 0; i < in.M; i++) {
@@ -22,10 +17,10 @@ int main() {
     formatOutput(input, output);
 
     array weight = createArray(3, 1);
-    randomDouble(weight);
+    randomFloat(weight);
 
     array bias = createArray(1, 1);
-    randomDouble(bias);
+    randomFloat(bias);
 
     array xT = createArray(3, inputSize);
     T(xT, input);
@@ -37,7 +32,7 @@ int main() {
     array y = createArray(inputSize, 1);
     int n = 0;
 
-    while (error > 0.2) {
+    while (error > 0.3) {
         // Initialise forward pass
         array z = matMul(input, weight);
         array eZ = createArray(inputSize, 1);
@@ -86,5 +81,5 @@ int main() {
     }
     printArray(y);
     printArray(output);
-
+    return 0;
 }

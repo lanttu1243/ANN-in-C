@@ -6,12 +6,17 @@
 #define ANN_IN_C_MATRIX_H
 
 #endif //ANN_IN_C_MATRIX_H
-typedef struct array array;
+typedef struct array{
+    double** array;
+    int M;
+    int N;
+    void (* printArray)(struct array);
+} array;
 
 array createArray(unsigned int M, unsigned int N);
-void freeArray(array arr);
+int freeArray(array arr);
 void printArray(array arr);
-void copy(array target, array source);
+int copy(array target, array source);
 
 array matMul(array a, array b);
 
@@ -28,5 +33,5 @@ void sigmoidDerivative(array target, array source);
 double sum(array a);
 void T(array target, array source);
 
-void randomDouble(array arr);
+void randomFloat(array arr);
 void randomInt(array a, int min, int max);

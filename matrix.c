@@ -3,18 +3,11 @@
 #include <stdio.h>
 #include "math.h"
 
-// Create a custom datatype for an array so there is no need to feed the dimensions as arguments for functions
-typedef struct array{
-    double** array;
-    int M;
-    int N;
-} array;
-
 // Initialises a matrix
 array createArray(unsigned int M, unsigned int N) {
     // initialise rows of matrix
     double** arr = (double**) calloc(M, sizeof(double*));
-    array matrix = {arr, M, N};
+    array matrix = {arr, M, N, printArray};
     // Initialise columns
     for (unsigned int i = 0; i < matrix.M; i++) {
         matrix.array[i] = (double*) calloc(matrix.N, sizeof(double));
@@ -23,11 +16,12 @@ array createArray(unsigned int M, unsigned int N) {
 }
 
 // frees a matrix
-void freeArray(array arr) {
+int freeArray(array arr) {
     for (int i = 0; i < arr.M; i++) {
         free(arr.array[i]);
     }
     free(arr.array);
+    return 0;
 }
 void printArray(array arr) {
     printf("[");
@@ -39,20 +33,22 @@ void printArray(array arr) {
         (arr.M-1)==i ? printf("]\n") : printf("\n");
     }
 }
-void copy(array target, array source) {
+int copy(array target, array source) {
     int an, am, bn, bm;
     am = target.M;
     an = target.N;
     bm = source.M;
     bn = source.N;
-#if am != bm && an != bn
-#error shape mismatch
-#endif
+    if (am != bm && an != bn) {
+        printf("There is a shape mismatch between the two arrays!");
+        return -1;
+    }
     for (int i = 0; i < source.M; i++) {
         for (int j = 0; j < source.N; j++) {
             target.array[i][j] = source.array[i][j];
         }
     }
+    return 0;
 }
 array matMul(array a, array b) {
     int an = a.N;
