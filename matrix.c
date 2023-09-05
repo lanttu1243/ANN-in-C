@@ -1,7 +1,4 @@
 #include "matrix.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include "math.h"
 
 // Initialises a matrix
 array createArray(unsigned int M, unsigned int N) {
@@ -11,6 +8,11 @@ array createArray(unsigned int M, unsigned int N) {
     // Initialise columns
     for (unsigned int i = 0; i < matrix.M; i++) {
         matrix.array[i] = (double*) calloc(matrix.N, sizeof(double));
+    }
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < N; j++) {
+            matrix.array[i][j] = 0;
+        }
     }
     return matrix;
 }
@@ -140,10 +142,24 @@ void sigmoid(array target, array source) {
         }
     }
 }
+void tanhArray(array target, array source) {
+    for (unsigned int i = 0; i < target.M; i++) {
+        for (unsigned int j = 0; j < target.N; j++) {
+            target.array[i][j] = tanh(source.array[i][j]);
+        }
+    }
+}
 void sigmoidDerivative(array target, array source) {
     for (unsigned int i = 0; i < target.M; i++){
         for (unsigned int j = 0; j < target.N; j++) {
             target.array[i][j] = sigmoidDouble(source.array[i][j]) * (1.0 - sigmoidDouble(source.array[i][j]));
+        }
+    }
+}
+void tanhDerivative(array target, array source){
+    for (unsigned int i = 0; i < target.M; i++){
+        for (unsigned int j = 0; j < target.N; j++) {
+            target.array[i][j] = 1.0 - tanh(source.array[i][j]) * tanh(source.array[i][j]);
         }
     }
 }

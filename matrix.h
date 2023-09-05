@@ -1,6 +1,9 @@
 //
 // Created by Lasse Kukkula on 23.2.2023.
 //
+#include <stdlib.h>
+#include <stdio.h>
+#include "math.h"
 
 #ifndef ANN_IN_C_MATRIX_H
 #define ANN_IN_C_MATRIX_H
@@ -28,7 +31,9 @@ void scalAdd(array a, double b);
 void scalMul(array a, double b);
 
 void sigmoid(array target, array source);
+void tanhArray(array target, array source);
 void sigmoidDerivative(array target, array source);
+void tanhDerivative(array target, array source);
 
 double sum(array a);
 void T(array target, array source);
