@@ -3,15 +3,41 @@
 
 void formatOutput(array in, array out) {
     for (int i = 0; i < in.M; i++) {
-        out.array[i][0] = in.array[i][2];
+        out.array[i][0] = in.array[i][0] && in.array[i][1];
+        out.array[i][1] = in.array[i][1] && in.array[i][2];
+        out.array[i][2] = in.array[i][2] && in.array[i][3];
+        out.array[i][3] = in.array[i][3] && in.array[i][4];
+        out.array[i][4] = in.array[i][4] && in.array[i][5];
+    }
+}
+void printResults(array input, array output, array o, double error, int n) {
+    printf("Round: %d, Error: %f\n", n, error);
+    for (int i = 0; i < input.M; i++){
+        printf("%d: [", i);
+        for (int j = 0; j < input.N; j++) {
+            printf("%0.1f, ", input.array[i][j]);
+        }
+        printf("]: Calculated: [");
+        for (int j = 0; j < output.N; j++) {
+            printf("%0.3f, ", o.array[j][i]);
+        }
+        printf("]: Actual: [");
+        for (int j = 0; j < output.N; j++) {
+            printf("%0.3f, ", output.array[j][i]);
+        }
+        printf("]\n");
     }
 }
 
 int main() {
-    int inputSize = 10;
+    int dataSize = 100; // number of entries
+    int inputSize = 6; // size of input
+    int outputSize = 5; // size of output
+    printf("Input matrix is of size %dX%d", dataSize, inputSize);
+    printf("Output matrix is of size %dX%d", dataSize, outputSize);
     // Initialise input and output matrices
-    array input = createArray(inputSize, 10);
-    array output = createArray(inputSize, 1);
+    array input = createArray(dataSize, inputSize);
+    array output = createArray(dataSize, outputSize);
     randomInt(input, 0, 2);
     formatOutput(input, output);
 
@@ -29,7 +55,7 @@ int main() {
     array o = createArray(inputSize, 1);
     int n = 0;
 
-    while (error > 0.000001) {
+    while (error > 0.00000001 && n < 10000000) {
         // Initialise forward pass
         array z = matMul(input, weight);
         array eZ = createArray(inputSize, 1);
@@ -74,10 +100,10 @@ int main() {
         freeArray(db);
         freeArray(ds);
         n++;
+        if (n == 1) {
+            printResults(input, output, o, error, n);
+        }
     }
-    printf("%d, %f\n", n, error);
-    for (int i = 0; i < (o.M < o.N ? o.N : o.M); i++){
-        printf("Calculated: %0.3f, Actual: %0.3f, Difference: %0.3f\n", o.array[0][i], output.array[0][i], output.array[0][i] - o.array[0][i]);
-    }
+    printResults(input, output, o, error, n);
     return 0;
 }
